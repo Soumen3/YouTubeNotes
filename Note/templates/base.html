@@ -14,11 +14,13 @@
 	{% block css %}{% endblock css %}
 </head>
 <body>
-	
 
 	{% include "components/navbar.html" %}
 	  
 	{% block body %}{% endblock body %}
+
+	{% include "components/footer.html" %}
+	
 </body>
 <script>
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
