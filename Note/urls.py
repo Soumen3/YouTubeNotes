@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -7,7 +7,11 @@ urlpatterns = [
 	path('notes/', views.notes, name='notes'),
 
 	# ===================== User Authentication =====================#
-	path('signup/', views.user_signup, name='signup'),
-	path('login/', views.user_login, name='login'),
-	path('logout/', views.user_logout, name='logout'),
+	path('accounts/signup/', views.user_signup, name='signup'),
+	path('accounts/login/', views.user_login, name='login'),
+	path('accounts/logout/', views.user_logout, name='logout'),
+
+	# ===================== Email Verification =====================#
+	path('verification/', include('verify_email.urls')),
+	path('verification/msg/', views.verification_message, name='verification_message'),
 ]

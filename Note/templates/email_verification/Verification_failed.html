@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+	<div class="msg bg-white dark:bg-gray-900 h-screen text-center">
+		<h1 class="text-4xl font-bold text-gray-800 dark:text-white justify-self-center mb-6">Email Verification</h1>
+		<p class="text-lg text-gray-800 dark:text-white justify-self-center mb-6">Verification failed. Please try again.</p>
+		<p class="text-lg text-gray-800 dark:text-white justify-self-center mb-6">Didn't receive the email? <a href="{% url "request-new-link-from-email" %}" class="text-blue-500 dark:text-blue-400">Resend</a></p>
+
+		
+	</div>
+{% endblock body %}
