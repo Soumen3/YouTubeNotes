@@ -3,6 +3,7 @@ from .form import CustomUserCreationForm, CustomeAuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from verify_email.email_handler import send_verification_email
 
 
 # Create your views here.
@@ -15,8 +16,8 @@ def user_signup(request):
 	if request.method == 'POST':
 		form = CustomUserCreationForm(request.POST)
 		if form.is_valid():
-			form.save()
-			return redirect('login')
+			inavtid_user = send_verification_email(request, form)
+			return redirect('verification_message')
 		else:
 			context['form'] = CustomUserCreationForm()
 			messages.error(request, 'Invalid input')
@@ -55,6 +56,9 @@ def user_logout(request):
 	logout(request)
 	messages.success(request, 'You are logged out successfully')
 	return redirect('home')
+
+def verification_message(request):
+	return render(request, 'email_verification/verification_msg.html')
 
 def home(request):
 	return render(request, 'Note/home.html')
