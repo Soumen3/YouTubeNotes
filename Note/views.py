@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from verify_email.email_handler import send_verification_email
-
-
+from .YT_api import search_videos
+import json
 # Create your views here.
 
 def user_signup(request):
@@ -64,6 +64,18 @@ def home(request):
 	return render(request, 'Note/home.html')
 
 def videos(request):
+	if request.method == 'POST':
+		query = request.POST.get('query')
+		if query:
+			data = search_videos(query)
+			playlists = [item for item in data['data'] if item['type'] == 'playlist']
+			videos = [item for item in data['data'] if item['type'] == 'video']
+			context = {
+				'videos': videos,
+				'playlists': playlists,
+				'plsyllist_video': len(playlists)
+			}
+			return render(request, 'Note/videos.html', context)
 	return render(request, 'Note/videos.html')
 
 def notes(request):
