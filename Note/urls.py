@@ -7,7 +7,6 @@ urlpatterns = [
 	path('play-video/<str:video_id>/', views.playVideo, name='play_video'),
 	path('notes/', views.notes, name='notes'),
 
-
 	# ===================== User Authentication =====================#
 	path('accounts/signup/', views.user_signup, name='signup'),
 	path('accounts/login/', views.user_login, name='login'),

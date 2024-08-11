@@ -3,7 +3,7 @@
 {% block body %}
 	<div class="main bg-white dark:bg-gray-800 text-gray-800 dark:text-white min-h-screen">
 		<div class="search-bar px-3 py-2">
-			<form class="max-w-md mx-auto" method="post">  {% csrf_token %} 
+			<form class="max-w-md mx-auto" method="get" action="{% url "videos" %}">  {% csrf_token %} 
 				<label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
 				<div class="relative">
 					<div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -55,6 +55,9 @@
 				{{playlists|safe}}
 
 			</div>
+		{% else %}
+			<p class="flex w-screen justify-center font-bold text-3xl mt-4 text-gray-600 dark:text-gray-300">Search Your Videos</p>
 		{% endif %}
+
 	</div>
 {% endblock body %}

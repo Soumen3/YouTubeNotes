@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from verify_email.email_handler import send_verification_email
 from .YT_api import search_videos
+from .models import Note
+from django.http import JsonResponse
 import json
 # Create your views here.
 
@@ -64,24 +66,37 @@ def home(request):
 	return render(request, 'Note/home.html')
 
 def videos(request):
-	if request.method == 'POST':
-		query = request.POST.get('query')
-		if query:
-			data = search_videos(query)
-			playlists = [item for item in data['data'] if item['type'] == 'playlist']
-			videos = [item for item in data['data'] if item['type'] == 'video']
-			context = {
-				'videos': videos,
-				'playlists': playlists,
-				'plsyllist_video': len(playlists)
-			}
-			return render(request, 'Note/videos.html', context)
+	query = request.GET.get('query')
+	if query:
+		data = search_videos(query)
+		playlists = [item for item in data['data'] if item['type'] == 'playlist']
+		videos = [item for item in data['data'] if item['type'] == 'video']
+		context = {
+			'videos': videos,
+			'playlists': playlists,
+			'plsyllist_video': len(playlists)
+		}
+		return render(request, 'Note/videos.html', context)
 	return render(request, 'Note/videos.html')
 
 def playVideo(request, video_id):
 	title = request.GET.get('title',  "No title")
 	description = request.GET.get('description', "No description")
 	channel = request.GET.get('channel', "No channel")
+
+	if request.method == 'POST':
+		note_title = request.POST.get('title')
+		content = request.POST.get('note')
+		time = request.POST.get('time')
+
+		note = Note.objects.create(title=note_title, content=content, time=time, video_id=video_id, video_title=title, video_description=description, video_channel=channel, owner=request.user)
+		note.save()
+		messages.success(request, 'Note saved successfully')
+		return JsonResponse({
+			'title':note_title,
+			'content':content,
+			'time':time,
+			})
 	
 	context = {
 		'video_id': video_id,
@@ -89,6 +104,10 @@ def playVideo(request, video_id):
 		'description': description,
 		'channel': channel,
 	}
+
+	# get the notes 
+	notes = Note.objects.filter(video_id=video_id, owner=request.user)
+	context['notes'] = notes
 	return render(request, 'Note/play_video.html', context)
 
 def notes(request):
