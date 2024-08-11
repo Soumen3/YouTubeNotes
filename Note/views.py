@@ -78,5 +78,18 @@ def videos(request):
 			return render(request, 'Note/videos.html', context)
 	return render(request, 'Note/videos.html')
 
+def playVideo(request, video_id):
+	title = request.GET.get('title',  "No title")
+	description = request.GET.get('description', "No description")
+	channel = request.GET.get('channel', "No channel")
+	
+	context = {
+		'video_id': video_id,
+		'title': title,
+		'description': description,
+		'channel': channel,
+	}
+	return render(request, 'Note/play_video.html', context)
+
 def notes(request):
 	return render(request, 'Note/notes.html')
