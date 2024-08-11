@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+	<div class="yt-video bg-white dark:bg-gray-800 text-gray-800 dark:text-white flex flex-col md:flex-row flex-wrap justify-center items-start">
+		<iframe id="ytplayer" type="text/html" 
+			width="auto" height="auto"
+			class=" w-full md:w-1/3 h-96 md:h-96"
+			allow="fullscreen; encrypted-media; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+			referrerpolicy="no-referrer-when-downgrade" 
+			src="https://www.youtube.com/embed/{{video_id}}" frameborder="0"
+		></iframe>
+		<div class="video-details grid text-gray-800 dark:text-white left-0 px-1">
+			<p class="font-medium"> Title: <span class="font-light ">{{title}}</span></p class="">
+			<p class="font-medium"> Description: <span class="font-light ">{{description}}</span></p class="">
+			<p class="font-medium"> Channel: <span class="font-light ">{{channel}}</span></p class="">
+		</div>
+	</div>
+{% endblock body %}
+
+{% block js %}
+
+{% endblock js %}

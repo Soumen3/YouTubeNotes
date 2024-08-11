@@ -4,7 +4,9 @@ from . import views
 urlpatterns = [
 	path('', views.home, name='home'),
 	path('videos/', views.videos, name='videos'),
+	path('play-video/<str:video_id>/', views.playVideo, name='play_video'),
 	path('notes/', views.notes, name='notes'),
+
 
 	# ===================== User Authentication =====================#
 	path('accounts/signup/', views.user_signup, name='signup'),
