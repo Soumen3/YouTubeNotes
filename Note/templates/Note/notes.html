@@ -3,6 +3,12 @@
 
 {% block body %}
     <div class="notes-main bg-white dark:bg-gray-700 text-gray-800 dark:text-white min-h-screen">
+		<div class="search-notes">
+			<form action="" method="get" class="flex justify-end items-center p-4">{% csrf_token %}
+				<input type="text" name="search" class="mr-3 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-gray-800 text-gray-800 dark:text-white" placeholder="Search notes">
+				<button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+			</form>
+		</div>
         <div class="notes-header bg-gray-200 dark:bg-gray-800">
             <h1 class="text-center text-2xl font-bold py-2">Notes</h1>
         </div>
@@ -23,8 +29,8 @@
                         {% for note in notes %}
                             <tr>
                                 <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ note.title }}</td>
-                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ note.content }}</td>
-								<td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ note.video.video_title }}</td>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ note.content | truncatechars:20}}</td>
+								<td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ note.video.video_title | truncatechars:20 }}</td>
 								<td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">
 									<iframe id="ytplayer" type="text/html" 
 										width="auto" height="auto"

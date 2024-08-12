@@ -118,6 +118,17 @@ def playVideo(request, video_id):
 def notes(request):
 
 	context = {}
+	query = request.GET.get('search')
+	if query:
+		note_title = Note.objects.filter(title__icontains=query, owner=request.user)
+		note_content = Note.objects.filter(content__icontains=query, owner=request.user)
+		video_title = Note.objects.filter(video__video_title__icontains=query, owner=request.user)
+		notes = note_title.union(note_content, video_title)
+		context['notes'] = notes
+		context['search'] = query
+		return render(request, 'Note/notes.html', context)
+
+
 	notes = Note.objects.filter(owner=request.user)
 	context['notes'] = notes
 	return render(request, 'Note/notes.html', context)
