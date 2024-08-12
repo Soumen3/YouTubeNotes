@@ -106,11 +106,11 @@ def playVideo(request, video_id):
 
 		note = Note.objects.create(title=note_title, content=content, video=video, time=time, owner=request.user)
 		note.save()
-		messages.success(request, 'Note saved successfully')
 		return JsonResponse({
 			'title':note_title,
 			'content':content,
 			'time':time,
+			'message': 'Note saved successfully',
 			})
 	
 	context = {
@@ -127,7 +127,7 @@ def playVideo(request, video_id):
 
 def notes(request):
 	if not request.user.is_authenticated:
-		messages.error(request, 'You are not authorized to view this page')
+		messages.error(request, 'You are not logged in')
 		return redirect('home')
 
 	context = {
