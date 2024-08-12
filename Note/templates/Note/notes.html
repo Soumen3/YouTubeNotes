@@ -1,6 +1,57 @@
 {% extends "base.html" %}
-
+{% load static %}
 
 {% block body %}
-	<h1>Notes</h1>
+    <div class="notes-main bg-white dark:bg-gray-700 text-gray-800 dark:text-white min-h-screen">
+        <div class="notes-header bg-gray-200 dark:bg-gray-800">
+            <h1 class="text-center text-2xl font-bold py-2">Notes</h1>
+        </div>
+        <div class="notes-body">
+            <div class="table-container" style="overflow-y: auto;">
+                <table class="min-w-full bg-white dark:bg-gray-800" style="width: -webkit-fill-available;">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">Title</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">Content</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">Video Title</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">Video</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">Created At</th>
+                            <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for note in notes %}
+                            <tr>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ note.title }}</td>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ note.content }}</td>
+								<td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ note.video.video_title }}</td>
+								<td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">
+									<iframe id="ytplayer" type="text/html" 
+										width="auto" height="auto"
+										class=" "
+										allow="fullscreen; encrypted-media; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+										referrerpolicy="no-referrer-when-downgrade" 
+										src="https://www.youtube.com/embed/{{note.video.video_id}}" frameborder="0"
+									></iframe>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ note.created_at }}</td>
+                                <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">
+                                    <a href="{% url 'play_video' note.video.video_id %}?title={{ note.video.video_title | urlencode }}&description={{ note.video.video_description | urlencode }}&channel={{ note.video.video_channel | urlencode }}" 
+										class="text-blue-500 dark:text-blue-400"
+									>
+									<button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-2">View</button>
+									</a>
+									<a href="" class="mb-2 flex"><button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button></a>
+									<a href=""><button class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Delete</button></a>
+								
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% comment %} <div class="notes-footer bg-gray-200 dark:bg-gray-800">
+            <a href="" class="text-blue-500 dark:text-blue-400">Create Note</a>
+        </div> {% endcomment %}
+    </div>
 {% endblock body %}

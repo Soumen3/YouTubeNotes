@@ -116,4 +116,8 @@ def playVideo(request, video_id):
 	return render(request, 'Note/play_video.html', context)
 
 def notes(request):
-	return render(request, 'Note/notes.html')
+
+	context = {}
+	notes = Note.objects.filter(owner=request.user)
+	context['notes'] = notes
+	return render(request, 'Note/notes.html', context)
