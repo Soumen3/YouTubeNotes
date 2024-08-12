@@ -7,7 +7,8 @@ from verify_email.email_handler import send_verification_email
 from .YT_api import search_videos
 from .models import Note, Video_detail
 from django.http import JsonResponse
-import json
+
+
 # Create your views here.
 
 def user_signup(request):
@@ -86,6 +87,9 @@ def videos(request):
 	return render(request, 'Note/videos.html', context)
 
 def playVideo(request, video_id):
+	if not request.user.is_authenticated:
+		messages.error(request, 'You are not authorized to view this page')
+		return redirect('videos')
 	title = request.GET.get('title',  "No title")
 	description = request.GET.get('description', "No description")
 	channel = request.GET.get('channel', "No channel")
@@ -122,6 +126,9 @@ def playVideo(request, video_id):
 	return render(request, 'Note/play_video.html', context)
 
 def notes(request):
+	if not request.user.is_authenticated:
+		messages.error(request, 'You are not authorized to view this page')
+		return redirect('home')
 
 	context = {
 		'active_notes': 'active'
@@ -142,6 +149,10 @@ def notes(request):
 	return render(request, 'Note/notes.html', context)
 
 def dashboard(request, id, username):
+	if not request.user.is_authenticated:
+		messages.error(request, 'You are not authorized to view this page')
+		return redirect('home')
+	
 	if request.user.id != id:
 		messages.error(request, 'You are not authorized to view this page')
 		return redirect('home')
