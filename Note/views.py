@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from verify_email.email_handler import send_verification_email
 from .YT_api import search_videos
-from .models import Note
+from .models import Note, Video_detail
 from django.http import JsonResponse
 import json
 # Create your views here.
@@ -89,7 +89,12 @@ def playVideo(request, video_id):
 		content = request.POST.get('note')
 		time = request.POST.get('time')
 
-		note = Note.objects.create(title=note_title, content=content, time=time, video_id=video_id, video_title=title, video_description=description, video_channel=channel, owner=request.user)
+		if Video_detail.objects.filter(video_id=video_id).exists():
+			video = Video_detail.objects.get(video_id=video_id)
+		else:
+			video = Video_detail.objects.create(video_id=video_id, video_title=title, video_description=description, video_channel=channel)
+
+		note = Note.objects.create(title=note_title, content=content, video=video, time=time, owner=request.user)
 		note.save()
 		messages.success(request, 'Note saved successfully')
 		return JsonResponse({
@@ -106,7 +111,7 @@ def playVideo(request, video_id):
 	}
 
 	# get the notes 
-	notes = Note.objects.filter(video_id=video_id, owner=request.user)
+	notes = Note.objects.filter(video__video_id=video_id, owner=request.user)
 	context['notes'] = notes
 	return render(request, 'Note/play_video.html', context)
 

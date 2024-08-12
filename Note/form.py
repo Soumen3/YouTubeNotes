@@ -7,7 +7,7 @@ tailwindcss = " rounded-lg bg-gray-800 w-full :text-gray-200 dark:bg-gray-700 bo
 
 class CustomUserCreationForm(UserCreationForm):
 	username = forms.CharField(label="Username",
-						  widget=forms.TextInput(attrs={'class': tailwindcss ,'placeholder':'Write here...'}))
+						  widget=forms.TextInput(attrs={'class': tailwindcss ,'placeholder':'Write here...', 'autofocus': 'autofocus'}))
 	email = forms.EmailField(label="Email address", 
 						  widget=forms.EmailInput(attrs={'class': tailwindcss , 'placeholder':'Write here...'}))
 	first_name = forms.CharField(label="First name",
@@ -34,7 +34,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 class CustomeAuthenticationForm(AuthenticationForm):
 	username = forms.CharField(label="Username",
-						  widget=forms.TextInput(attrs={'class': tailwindcss ,'placeholder':'Write here...'}))
+						  widget=forms.TextInput(attrs={'class': tailwindcss ,'placeholder':'Write here...', 'autofocus': 'autofocus'}))
 	password = forms.CharField(label="Password",
 						  widget=forms.PasswordInput(attrs={'class': tailwindcss ,'placeholder':'Write here...'}))	
 	class Meta:

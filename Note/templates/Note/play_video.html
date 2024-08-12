@@ -87,6 +87,10 @@
                     <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">${data.title}</td>
                     <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">${data.content}</td>
                     <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">${data.time}</td>
+                    <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600 flex flex-wrap">
+                        <a href="" class="mb-2 flex"><button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button></a>
+                        <a href=""><button class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Delete</button></a>
+                    </td>
                 `;
                 document.getElementById('notes-tbody').appendChild(newRow);
 
