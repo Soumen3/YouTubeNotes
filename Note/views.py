@@ -63,21 +63,27 @@ def verification_message(request):
 	return render(request, 'email_verification/verification_msg.html')
 
 def home(request):
-	return render(request, 'Note/home.html')
+	context = {
+		'active_home': 'active'
+	}
+	return render(request, 'Note/home.html', context)
 
 def videos(request):
 	query = request.GET.get('query')
+	context = {
+		'active_videos': 'active'
+	}
 	if query:
 		data = search_videos(query)
 		playlists = [item for item in data['data'] if item['type'] == 'playlist']
 		videos = [item for item in data['data'] if item['type'] == 'video']
-		context = {
-			'videos': videos,
-			'playlists': playlists,
-			'plsyllist_video': len(playlists)
-		}
+		context['videos'] = videos
+		context['playlists'] = playlists
+		context['plsyllist_video'] = len(playlists)
+		context['search'] = query
 		return render(request, 'Note/videos.html', context)
-	return render(request, 'Note/videos.html')
+
+	return render(request, 'Note/videos.html', context)
 
 def playVideo(request, video_id):
 	title = request.GET.get('title',  "No title")
@@ -117,7 +123,9 @@ def playVideo(request, video_id):
 
 def notes(request):
 
-	context = {}
+	context = {
+		'active_notes': 'active'
+	}
 	query = request.GET.get('search')
 	if query:
 		note_title = Note.objects.filter(title__icontains=query, owner=request.user)
@@ -132,3 +140,12 @@ def notes(request):
 	notes = Note.objects.filter(owner=request.user)
 	context['notes'] = notes
 	return render(request, 'Note/notes.html', context)
+
+def dashboard(request, id, username):
+	if request.user.id != id:
+		messages.error(request, 'You are not authorized to view this page')
+		return redirect('home')
+	context = {
+		'active_dashboard': 'active'
+	}
+	return render(request, 'Note/dashboard.html', context)
