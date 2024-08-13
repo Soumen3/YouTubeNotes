@@ -13,8 +13,9 @@
 					</span>
 				</button>
 			</form>
-			<div class="alternative-link">
+			<div class="alternative-link flex flex-col items-end">
 				<p>Don't have an account? <a href="{% url 'signup' %}" class="text-blue-500 dark:text-blue-400">Sign Up</a></p>
+				<a href="{% url "password_reset" %}" class="text-blue-500 dark:text-blue-400">Forgot Password?</a>
 			</div>
 		</div>
 		

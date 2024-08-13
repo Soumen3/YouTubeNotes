@@ -11,8 +11,8 @@ from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .form import CustomPasswordChangeForm
-
+from .form import CustomPasswordChangeForm, CustomPasswordResetForm, CustomSetPasswordForm
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 
 # Create your views here.
 
@@ -180,3 +180,25 @@ class CustomPasswordChangeView(PasswordChangeView):
     def form_valid(self, form):
         messages.success(self.request, 'Your password was successfully updated!')
         return super().form_valid(form)
+	
+
+class CustomPasswordResetView(PasswordResetView):
+	form_class = CustomPasswordResetForm
+	template_name = 'password/password_reset_form.html'
+	success_url = reverse_lazy('home')
+
+	def form_valid(self, form):
+		messages.success(self.request, 'An email has been sent to your email address')
+		return super().form_valid(form)
+	
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+	form_class = CustomSetPasswordForm
+	template_name = 'password/password_reset_confirm.html'
+	success_url = reverse_lazy('login')
+
+	def form_valid(self, form):
+		messages.success(self.request, 'Your password was successfully updated!')
+		return super().form_valid(form)
+
+
