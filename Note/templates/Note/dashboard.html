@@ -14,7 +14,7 @@
                     <p class="text-gray-600 dark:text-gray-400">{{ request.user.email }}</p>
                     <p class="mt-2 text-gray-600 dark:text-gray-400">Joined on: {{ request.user.date_joined|date:"F j, Y" }}</p>
                     <div class="mt-4 flex flex-col">
-                        <a href="#" class="text-blue-500 dark:text-blue-400">Change Password</a>
+                        <a href="{% url "password_change" %}" class="text-blue-500 dark:text-blue-400">Change Password</a>
                         <a href="{% url 'logout' %}" class="ml-4 text-blue-500 dark:text-blue-400">Logout</a>
                     </div>
                 </div>

@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django import forms
+from django.contrib.auth.forms import PasswordChangeForm
 
 tailwindcss = " rounded-lg bg-gray-800 w-full :text-gray-200 dark:bg-gray-700 border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none text-sm text-gray-200 py-1 px-2 my-1"
 
@@ -40,3 +41,20 @@ class CustomeAuthenticationForm(AuthenticationForm):
 	class Meta:
 		model = User
 		fields = ('username', 'password')
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label="Old Password",
+        widget=forms.PasswordInput(attrs={'class': tailwindcss, 'placeholder': 'Enter old password'})
+    )
+    new_password1 = forms.CharField(
+        label="New Password",
+        widget=forms.PasswordInput(attrs={'class': tailwindcss, 'placeholder': 'Enter new password'})
+    )
+    new_password2 = forms.CharField(
+        label="Confirm New Password",
+        widget=forms.PasswordInput(attrs={'class': tailwindcss, 'placeholder': 'Confirm new password'})
+    )
+
+    class Meta:
+        fields = ['old_password', 'new_password1', 'new_password2']

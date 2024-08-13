@@ -7,6 +7,11 @@ from verify_email.email_handler import send_verification_email
 from .YT_api import search_videos
 from .models import Note, Video_detail
 from django.http import JsonResponse
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from .form import CustomPasswordChangeForm
 
 
 # Create your views here.
@@ -162,3 +167,16 @@ def dashboard(request, id, username):
 		'active_dashboard': 'active'
 	}
 	return render(request, 'Note/dashboard.html', context)
+
+
+
+
+@method_decorator(login_required, name='dispatch')
+class CustomPasswordChangeView(PasswordChangeView):
+    form_class = CustomPasswordChangeForm
+    template_name = 'password/password_change.html'
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Your password was successfully updated!')
+        return super().form_valid(form)
