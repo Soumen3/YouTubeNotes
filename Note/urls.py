@@ -1,5 +1,6 @@
 from django.urls import path, include
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 	path('', views.home, name='home'),
@@ -16,4 +17,7 @@ urlpatterns = [
 	# ===================== Email Verification =====================#
 	path('verification/', include('verify_email.urls')),
 	path('verification/msg/', views.verification_message, name='verification_message'),
+
+	# ===================== Password Change ========================#
+	path('password_change/', views.CustomPasswordChangeView.as_view(), name='password_change'),
 ]
