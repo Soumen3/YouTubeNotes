@@ -7,7 +7,9 @@ urlpatterns = [
 	path('videos/', views.videos, name='videos'),
 	path('play-video/<str:video_id>/', views.playVideo, name='play_video'),
 	path('notes/', views.notes, name='notes'),
-	path('dashboard/<int:id>/<str:username>', views.dashboard, name='dashboard'),
+	path('delete-note/<int:note_id>/', views.delete_note, name='delete_note'),
+	path('delete-from-video/<int:note_id>/', views.note_delete_from_play_video, name='delete_from_video'),
+	path('dashboard/<int:id>/<str:username>/', views.dashboard, name='dashboard'),
 
 	# ===================== User Authentication =====================#
 	path('accounts/signup/', views.user_signup, name='signup'),
