@@ -2,5 +2,23 @@
 {% load static %}
 
 {% block body %}
-	<h1>Dashboard</h1>
+    {% comment %} Profile {% endcomment %}
+    <div class="main min-h-screen bg-white dark:bg-gray-700 text-gray-800 dark:text-white p-4">
+        <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+            <div class="flex flex-col md:flex-row items-center p-6 justify-evenly" style="justify-content:space-evenly">
+                <div class="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden">
+                    <img src="{% static 'Note/media/profile.png' %}" alt="Profile Picture" class="w-full h-full object-cover">
+                </div>
+                <div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
+                    <h2 class="text-2xl font-semibold">{{ request.user.first_name }} {{ request.user.last_name }}</h2>
+                    <p class="text-gray-600 dark:text-gray-400">{{ request.user.email }}</p>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">Joined on: {{ request.user.date_joined|date:"F j, Y" }}</p>
+                    <div class="mt-4 flex flex-col">
+                        <a href="#" class="text-blue-500 dark:text-blue-400">Change Password</a>
+                        <a href="{% url 'logout' %}" class="ml-4 text-blue-500 dark:text-blue-400">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock body %}
