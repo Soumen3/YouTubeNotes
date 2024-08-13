@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .form import CustomUserCreationForm, CustomeAuthenticationForm
+from .form import CustomUserCreationForm, CustomeAuthenticationForm, NoteForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -102,7 +102,7 @@ def playVideo(request, video_id):
 
 	if request.method == 'POST':
 		note_title = request.POST.get('title')
-		content = request.POST.get('note')
+		content = request.POST.get('content')
 		time = request.POST.get('time')
 
 		if Video_detail.objects.filter(video_id=video_id).exists():
@@ -118,13 +118,14 @@ def playVideo(request, video_id):
 			'time':time,
 			'message': 'Note saved successfully',
 			})
-	
+	video = Video_detail.objects.get(video_id=video_id)
 	context = {
 		'video_id': video_id,
-		'title': title,
-		'description': description,
-		'channel': channel,
+		'title': video.video_title,
+		'description': video.video_description,
+		'channel': video.video_channel,
 	}
+	context['form']=NoteForm()
 
 	# get the notes 
 	notes = Note.objects.filter(video__video_id=video_id, owner=request.user)
@@ -154,21 +155,6 @@ def notes(request):
 	context['notes'] = notes
 	return render(request, 'Note/notes.html', context)
 
-def dashboard(request, id, username):
-	if not request.user.is_authenticated:
-		messages.error(request, 'You are not authorized to view this page')
-		return redirect('home')
-	
-	if request.user.id != id:
-		messages.error(request, 'You are not authorized to view this page')
-		return redirect('home')
-	
-	
-	context = {
-		'active_dashboard': 'active'
-	}
-	return render(request, 'Note/dashboard.html', context)
-
 
 
 @login_required
@@ -190,6 +176,46 @@ def note_delete_from_play_video(request, note_id):
 		return JsonResponse({'success': True})
 	except Note.DoesNotExist:
 		return JsonResponse({'success': False}, status=404)
+
+
+
+def edit_note(request, note_id, video_id):
+	context={}
+	note = Note.objects.get(id=note_id, owner=request.user)
+
+	if request.method == 'POST':
+		form = NoteForm(request.POST, instance=note)
+		if form.is_valid():
+			form.save()
+			messages.success(request, "Note Updated")
+		return redirect("play_video", video_id=video_id)
+	if note:
+		form = NoteForm(instance=note)
+		context['form']=form
+		return render(request, "Note/edit_note.html", context)
+	else:
+		messages.warning(request, "Note not found!")
+		return redirect('notes')
+		
+
+		
+
+
+def dashboard(request, id, username):
+	if not request.user.is_authenticated:
+		messages.error(request, 'You are not authorized to view this page')
+		return redirect('home')
+	
+	if request.user.id != id:
+		messages.error(request, 'You are not authorized to view this page')
+		return redirect('home')
+	
+	
+	context = {
+		'active_dashboard': 'active'
+	}
+	return render(request, 'Note/dashboard.html', context)
+
 
 
 @method_decorator(login_required, name='dispatch')

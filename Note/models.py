@@ -12,7 +12,7 @@ class Video_detail(models.Model):
 	
 class Note(models.Model):
 	title = models.CharField(max_length=100, blank=True, default='')
-	content = models.TextField( blank=False, default='No content')
+	content = models.TextField( blank=False, default='')
 	time = models.CharField(max_length=100, blank=True, default='')
 	video = models.ForeignKey(Video_detail, related_name='notes', on_delete=models.CASCADE, null=True)
 	created_at = models.DateTimeField(auto_now_add=True)

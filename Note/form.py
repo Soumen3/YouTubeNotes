@@ -78,3 +78,31 @@ class CustomSetPasswordForm(SetPasswordForm):
         label="Confirm New Password",
         widget=forms.PasswordInput(attrs={'class': tailwindcss, 'placeholder': 'Confirm new password'})
     )
+
+
+
+		# forms.py
+from django import forms
+from .models import Note
+
+class NoteForm(forms.ModelForm):
+	class Meta:
+		model = Note
+		fields = ['title', 'content', 'time']
+		widgets = {
+			'title': forms.TextInput(attrs={
+				'class': 'mb-2 w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-800 dark:text-white',
+				'placeholder': 'Title....'
+			}),
+			'content': forms.Textarea(attrs={
+				'cols': 30,
+				'rows': 10,
+				'required': True,
+				'class': 'w-full p-2 border border-gray-300 rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 text-gray-800 dark:text-white',
+				'placeholder': 'Add your notes here...'
+			}),
+			'time': forms.TextInput(attrs={
+				'class': 'w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-700 dark:text-white',
+				'placeholder': 'Video timestamp'
+			}),
+		}
