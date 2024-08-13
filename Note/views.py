@@ -88,7 +88,7 @@ def videos(request):
 
 def playVideo(request, video_id):
 	if not request.user.is_authenticated:
-		messages.error(request, 'You are not authorized to view this page')
+		messages.error(request, 'You are not logged in')
 		return redirect('videos')
 	title = request.GET.get('title',  "No title")
 	description = request.GET.get('description', "No description")
@@ -156,6 +156,8 @@ def dashboard(request, id, username):
 	if request.user.id != id:
 		messages.error(request, 'You are not authorized to view this page')
 		return redirect('home')
+	
+	
 	context = {
 		'active_dashboard': 'active'
 	}
