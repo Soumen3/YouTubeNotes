@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .form import CustomPasswordChangeForm, CustomPasswordResetForm, CustomSetPasswordForm
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -169,6 +170,26 @@ def dashboard(request, id, username):
 	return render(request, 'Note/dashboard.html', context)
 
 
+
+@login_required
+def delete_note(request, note_id):
+	note = get_object_or_404(Note, id=note_id, owner=request.user)
+	if note:
+		note.delete()
+		messages.success(request, 'Note deleted successfully')
+		return redirect('notes')
+	else:
+		messages.error(request, 'Note not found')
+		return redirect('notes')
+
+@login_required(login_url='login')
+def note_delete_from_play_video(request, note_id):
+	try:
+		note = Note.objects.get(id=note_id)
+		note.delete()
+		return JsonResponse({'success': True})
+	except Note.DoesNotExist:
+		return JsonResponse({'success': False}, status=404)
 
 
 @method_decorator(login_required, name='dispatch')
