@@ -118,12 +118,12 @@ def playVideo(request, video_id):
 			'time':time,
 			'message': 'Note saved successfully',
 			})
-	video = Video_detail.objects.get(video_id=video_id)
+	video = Video_detail.objects.get_or_create(video_id=video_id)
 	context = {
 		'video_id': video_id,
-		'title': video.video_title,
-		'description': video.video_description,
-		'channel': video.video_channel,
+		'title': title,
+		'description': description,
+		'channel': channel,
 	}
 	context['form']=NoteForm()
 
@@ -188,7 +188,14 @@ def edit_note(request, note_id, video_id):
 		if form.is_valid():
 			form.save()
 			messages.success(request, "Note Updated")
-		return redirect("play_video", video_id=video_id)
+
+		video = Video_detail.objects.get(video_id=video_id)
+		video_id = video_id
+		title = video.video_title
+		description = video.video_description
+		channel = video.video_channel
+
+		return redirect(f'/play-video/{video_id}?title={title}&description={description}&channel={channel}')
 	if note:
 		form = NoteForm(instance=note)
 		context['form']=form
